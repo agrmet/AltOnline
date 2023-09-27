@@ -20,23 +20,21 @@ try:
     mycursor.execute("CREATE DATABASE AltOnlineDB") #creation of DB
     mycursor.execute("USE AltOnlineDB") #"Switching" to DB
 
-
     # Start creating tables
     mycursor.execute("""
             CREATE TABLE department (
-                    key_variant ENUM('Primary Key', 'Foreign Key', 'None'),
-                    attribute_name VARCHAR(255)
+                    department_title VARCHAR(255) PRIMARY KEY,
+                    child_department VARCHAR(255),
+                    descritption VARCHAR(255),
+                    FOREIGN KEY (child_department) REFERENCES department(departname_name)
             )
         """)
     #specifying in what order data populates
-    sql = "INSERT INTO department (KeyVariant, AttributeName) VALUES (%s, %s)"
+    sql = "INSERT INTO department (department_title, child_department, description) VALUES (%s, %s, %s)"
     
     #the data that is populated into the table
-    data = [
-        ("Primary Key", "department title"),
-        ("Foreign Key", "child department title"),
-        ("None", "description")
-    ]
+    data = ("TV", "Smart TV", "platt")
+
     #go through each row
     # for val in data:
     mycursor.execute(sql,data)
