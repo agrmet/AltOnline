@@ -1,4 +1,5 @@
 import mysql.connector
+#prutt
 
 try:
     # MySQL credentials
