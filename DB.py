@@ -1,5 +1,4 @@
 import mysql.connector
-#prutt
 
 try:
     # MySQL credentials
@@ -15,38 +14,36 @@ try:
     )
     print("MySQL connection established.")
 
-    mycursor = mydb.cursor() #create a cursor object
+    mycursor = mydb.cursor()
+
+    # Consume the result of SHOW DATABASES
     mycursor.execute("SHOW DATABASES")
-    mycursor.execute("CREATE DATABASE AltOnlineDB") #creation of DB
-    mycursor.execute("USE AltOnlineDB") #"Switching" to DB
+    mycursor.fetchall()
 
-    # Start creating tables
+    # Create database and switch to it
+    mycursor.execute("CREATE DATABASE AltOnlineDB")
+    mycursor.execute("USE AltOnlineDB")
+
+    # Create table
     mycursor.execute("""
-            CREATE TABLE department (
-                    department_title VARCHAR(255) PRIMARY KEY,
-                    child_department VARCHAR(255),
-                    descritption VARCHAR(255),
-                    FOREIGN KEY (child_department) REFERENCES department(departname_name)
-            )
-        """)
-    #specifying in what order data populates
+        CREATE TABLE department (
+            department_title VARCHAR(255) PRIMARY KEY,
+            child_department VARCHAR(255),
+            description VARCHAR(255),
+            FOREIGN KEY (child_department) REFERENCES department(department_title)
+        )
+    """)
+
+    # Insert data
     sql = "INSERT INTO department (department_title, child_department, description) VALUES (%s, %s, %s)"
-    
-    #the data that is populated into the table
     data = ("TV", "Smart TV", "platt")
+    mycursor.execute(sql, data)
 
-    #go through each row
-    # for val in data:
-    mycursor.execute(sql,data)
-
+    # Commit changes
     mydb.commit()
-
-    for x in mycursor:
-        print(x)
 
     mycursor.close()
     mydb.close()
-
 
 except Exception as e:
     print("Error occurred:", e)
