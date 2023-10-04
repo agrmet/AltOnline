@@ -19,9 +19,6 @@ except Exception as e:
 
 mycursor = mydb.cursor()
 
-# Drop database if it exists
-mycursor.execute("DROP DATABASE IF EXISTS ht23_1_project_group_42")
-
 # Create database and switch to it
 mycursor.execute("CREATE DATABASE ht23_1_project_group_42")
 mycursor.execute("USE ht23_1_project_group_42")
